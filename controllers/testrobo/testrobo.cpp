@@ -106,6 +106,14 @@ void turnBack(){
   rightSpeed = 10;
   return;
 }
+
+
+void noTurn(){
+  turnTime = turnTime-2;
+  leftSpeed  = 10;
+  rightSpeed = 10;
+  return;
+}
 // ------------------------------------------------------------------------------------------------
 
 int main(int argc, char **argv) {
@@ -236,6 +244,10 @@ int main(int argc, char **argv) {
   bool case11 = true;
   bool case12 = false;
   
+  bool path1 = true;
+  bool path2 = false;
+  bool path3 = false;
+  
   while (robot->step(TIME_STEP) != -1) {
     
     // distance sensor values
@@ -265,14 +277,14 @@ int main(int argc, char **argv) {
         leftSpeed = 0;
         rightSpeed = 0;
       }else{
-        starting = 1000;
+        starting = 20;
         leftSpeed = 10;
         rightSpeed = 10;
       }
       
     }else{
       // check junctions
-      if (((rightWay<500 && leftWay<500) || (leftWay<500 && frontWay<500)) && turnTime==0 && ramp<2){
+      if (((rightWay<500 && leftWay<500) || (leftWay<500 && frontWay<500) || (rightWay<500 && frontWay<500)) && turnTime==0 && ramp<2){
         turnTime = 26;
         turns++;
         //std::cout<<turns<<"\n";
@@ -287,17 +299,33 @@ int main(int argc, char **argv) {
       // check that there are no walls
       else{
         // junctions to turn left
-        if (turnTime > 0 && ramp==1 && !(difference/2)){
-          turnLeft();
-        // junctions to turn left
-        }else if (turnTime > 0 && ramp==1 && (difference/2)){
-          turnRight();
-        }else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp){
+        if (turnTime > 0 && ramp==1 && !(difference/2) && difference != 0){
           turnLeft();
         // junctions to turn right
-        }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6 || turns==7) && !ramp){
+        }else if (turnTime > 0 && ramp==1 && ((difference/2) || difference == 0)){
+          turnRight();
+        // junctions to turn left
+        }else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp && path1){
+          turnLeft();
+        // junctions to turn right
+        }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6 || turns==7) && !ramp && path1){
+          turnRight();
+        // junctions to turn left
+        }else if (turnTime > 0 && (turns==3 || turns==5) && !ramp && path2){
+          turnLeft();
+        // junctions to turn right
+        }else if (turnTime > 0 && turns==4 && !ramp && path2){
+          turnRight();
+        // junctions to turn left
+        }else if (turnTime > 0 && (turns==2 || turns==4) && !ramp && path3){
+          turnLeft();
+        // junctions to turn right
+        }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6) && !ramp && path3){
           turnRight();
         // turn back
+        }else if (turnTime > 0 && turns==5 && !ramp && path3){
+          noTurn();
+        // junctions to turn right
         }else if (turnTime > 0 && poles){
           turnBack();
         }
@@ -383,6 +411,14 @@ int main(int argc, char **argv) {
          // camera disable
         if (breakTime==44){
           cam->disable();
+          if (turns == 2){
+            path1 = false;
+            path2 = true;
+          }
+          if (turns == 3){
+            path1 = false;
+            path3 = true;
+          }
         }
         
      // ------------------------------------------------------------------------------
@@ -606,10 +642,10 @@ int main(int argc, char **argv) {
         start = ps->getValue();
         case1 = false;
       }
-      if (turns==4 && case2){
+      if ((turns==4) && case2){
         end = ps->getValue();
         ps->disable();
-        int dis = (end-start)*3;
+        int dis = (end-start)*3.5;
         std::cout<<"Diameter: "<<dis<<"cm"<<"\n";
         
         // display the diameter
@@ -633,15 +669,24 @@ int main(int argc, char **argv) {
         case8 = false;
       }
       if (turns==4 && case9){
-        display->drawText("Q-03",13,35);
-        std::cout<<"Q=03"<<"\n";
-        case9 = false;
+        if (!path2){
+          display->drawText("Q-03",13,35);
+          std::cout<<"Q=03"<<"\n";
+          case9 = false;
+        }else{
+          display->drawText("Q-04",13,35);
+          std::cout<<"Q=04"<<"\n";
+          case5 = true;
+          acc->enable(TIME_STEP);             // enable the accelerometer
+          case9 = false;
+        }
+        
       }
-      if (turns==7 && case10){
+      if (((turns==7 && path1) || (turns==5 && path3)) && case10){
         display->drawText("Q=04",13,45);
         std::cout<<"Q=04"<<"\n";
         case5 = true;
-        acc->enable(TIME_STEP);             // enavle the accelerometer
+        acc->enable(TIME_STEP);             // enable the accelerometer
         case10 = false;
       }
 
@@ -658,7 +703,6 @@ int main(int argc, char **argv) {
         if (duration>10){
           ramp=1;
           turnTime = 1;
-          std::cout<<"Ramp"<<"\n";
           acc->disable();
           case5 = false;
         }    
