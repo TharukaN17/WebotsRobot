@@ -244,6 +244,9 @@ int main(int argc, char **argv) {
   bool case11 = true;
   bool case12 = false;
   
+  bool case13 = true;
+  bool reverse = false;
+  
   bool path1 = true;
   bool path2 = false;
   bool path3 = false;
@@ -301,10 +304,14 @@ int main(int argc, char **argv) {
         // junctions to turn left
         if (turnTime > 0 && ramp==1 && !(difference/2) && difference != 0){
           turnLeft();
+          //turnRight();
         // junctions to turn right
         }else if (turnTime > 0 && ramp==1 && ((difference/2) || difference == 0)){
           turnRight();
+          //turnLeft();
         // junctions to turn left
+        }else if (turnTime > 0 && ramp == 5){
+          noTurn();
         }else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp && path1){
           turnLeft();
         // junctions to turn right
@@ -726,10 +733,20 @@ int main(int argc, char **argv) {
         std::cout<<"Pillars: "<<poles<<"\n";
         if (poles == 1){
           turnTime = 52;
+          reverse = true;
         }
         ramp++;        
         case3 = false;
       }
+      
+      if (reverse && (leftWay<500 || rightWay<500) && case13  && ramp == 4){
+        turnTime = 26;
+        ramp++;
+        //std::cout<<ramp<<"\n";
+        //case13 = false;
+      }
+      //std::cout<<"ramp: "<<ramp<<"\n";
+      //std::cout<<"pillar: "<<poles<<"\n";
 // ------------------------------------------------------------------------------------------------------------------
       // gate passing
       if (ramp && ir[0]->getValue()<500 && ir[7]->getValue()<500 && case11){
