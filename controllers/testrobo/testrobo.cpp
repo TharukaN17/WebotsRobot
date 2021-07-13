@@ -15,11 +15,11 @@ using namespace webots;
 
 // define some global variables
 
-static int lastError = 0;
-static int I = 0;
-static double leftSpeed;
-static double rightSpeed;
-static int turnTime;
+static int      lastError   = 0;
+static int      I           = 0;
+static double   leftSpeed;
+static double   rightSpeed;
+static int      turnTime;
 
 // ------------------------------------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ void wallFollow(int &ds,double &kp,double &kd,double &ki,double &baseSpeed, int 
 // left turning function
 void turnLeft(){
   turnTime--;
-  leftSpeed = 0;
+  leftSpeed  = 0;
   rightSpeed = 15;
   return;
 }
@@ -93,7 +93,7 @@ void turnLeft(){
 // Right turning function
 void turnRight(){
   turnTime--;
-  leftSpeed = 15;
+  leftSpeed  = 15;
   rightSpeed = 0;
   return;
 }
@@ -102,7 +102,7 @@ void turnRight(){
 // Back turning function
 void turnBack(){
   turnTime--;
-  leftSpeed = -10;
+  leftSpeed  = -10;
   rightSpeed = 10;
   return;
 }
@@ -110,22 +110,26 @@ void turnBack(){
 
 // Go forward without turning function
 void noTurn(){
-  turnTime = turnTime-2;
+  turnTime   = turnTime-2;
   leftSpeed  = 10;
   rightSpeed = 10;
   return;
 }
+// ------------------------------------------------------------------------------------------------
 
+// Immidiate right turning function
 void turnRightI(){
   turnTime--;
-  leftSpeed = 10;
+  leftSpeed  = 10;
   rightSpeed = -10;
   return;
 }
+// ------------------------------------------------------------------------------------------------
 
+// Immidiate left turning function
 void turnLeftI(){
   turnTime--;
-  leftSpeed = -10;
+  leftSpeed  = -10;
   rightSpeed = 10;
   return;
 }
@@ -203,39 +207,39 @@ int main(int argc, char **argv) {
   
   // define some variables
   
-  int starting = 0;             // for the starting
+  int starting = 0;               // for the starting
    
-  double kp = 1;                // line following parameters
-  double kd = 0.05;
-  double ki = 0.08;
-  double baseSpeed = 10;
+  double kp         = 1;          // line following parameters
+  double kd         = 0.05;
+  double ki         = 0.08;
+  double baseSpeed  = 10;
   
-  turnTime = 0;                    // variables for taking turns
+  turnTime  = 0;                  // variables for taking turns
   int turns = 0;
   
-  double start = 0;             // for calculating the diameter
-  double end = 0;
-  bool case1 = true;
-  bool case2 = true;
+  double start  = 0;              // for calculating the diameter
+  double end    = 0;
+  bool   case1  = true;
+  bool   case2  = true;
   
-  bool case5 = false;           // for ramp detection
-  int duration = 0;
-  int ramp = 0;
+  bool case5    = false;          // for ramp detection
+  int  duration = 0;
+  int  ramp     = 0;
       
-  int poles = 0;                // for counting the poles
+  int  poles = 0;                // for counting the poles
   bool case3 = true;
   bool case4 = true;
   
   std::map<std::string,int> colour_mp = {{"Red",1},{"Green",2},{"Blue",3}};             // colour code
   
-  int breakTime = 0;                // for arm movements and colour detection
-  int timeLimit = 0;
-  int side1 = 0;
-  int side2 = 0;
-  int side3 = 0;
-  int difference = 0;
-  bool case6 = false;
-  bool case7 = true;
+  int   breakTime = 0;           // for arm movements and colour detection
+  int  timeLimit  = 0;
+  int  side1      = 0;
+  int  side2      = 0;
+  int  side3      = 0;
+  int  difference = 0;
+  bool case6      = false;
+  bool case7      = true;
   
   bool break0  = false;         bool step0  = false;                // arm movements which have 14 steps and 14 break times
   bool break1  = false;         bool step1  = false;
@@ -248,43 +252,40 @@ int main(int argc, char **argv) {
   bool break8  = false;         bool step8  = false;
   bool break9  = false;         bool step9  = false;
   bool break10 = false;         bool step10 = false;
-  //bool break11 = false;         bool step11 = false;
-  //bool break12 = false;         bool step12 = false;  
-  //bool break13 = false;         bool step13 = false;
   
-  bool case8 = true;            // for quadrant number displaying
-  bool case9 = true;
+  bool case8  = true;           // for quadrant number displaying
+  bool case9  = true;
   bool case10 = true;
   
-  bool case11 = true;
+  bool case11 = true;           // for gate passing
   bool case12 = false;
   
-  bool case13 = true;          // after reverse situation
+  bool case13  = true;          // after reverse situation
   bool reverse = false;
   
-  bool path1 = true;           // making three paths to get shortest path
+  bool path1 = true;            // making three paths to get shortest path
   bool path2 = false;
   bool path3 = false;
   
   while (robot->step(TIME_STEP) != -1) {
     
     // distance sensor values
-    int ds_left = ds[0]->getValue();
+    int ds_left  = ds[0]->getValue();
     int ds_front = ds[1]->getValue();
     int ds_right = ds[2]->getValue();
     
     // junction detecting ir sensor values
-    int leftWay = bottom[0]->getValue();
+    int leftWay  = bottom[0]->getValue();
     int frontWay = bottom[1]->getValue();
     int rightWay = bottom[2]->getValue();
-    int backWay = bottom[3]->getValue();
+    int backWay  = bottom[3]->getValue();
       
-    leftSpeed = 10;
+    leftSpeed  = 10;
     rightSpeed = 10;
     
     // starting time
     if (starting){
-      leftSpeed = 10;
+      leftSpeed  = 10;
       rightSpeed = 10;
       starting--;
     }
@@ -292,11 +293,11 @@ int main(int argc, char **argv) {
     // stop & start conditions
     else if (leftWay<500 && frontWay<500 && rightWay<500 && backWay<500){
       if (ramp){
-        leftSpeed = 0;
+        leftSpeed  = 0;
         rightSpeed = 0;
       }else{
-        starting = 20;
-        leftSpeed = 10;
+        starting   = 20;
+        leftSpeed  = 10;
         rightSpeed = 10;
       }
       
@@ -313,52 +314,45 @@ int main(int argc, char **argv) {
       // wall at left
       }else if (ds_left < 900 && frontWay>500 && leftWay>500 && rightWay>500){
         wallFollow(ds_left,kp,kd,ki,baseSpeed,1);    
-      }// check that there are no walls
+      }// checked that there are no walls
       else{
-        // junctions to turn left
+        // -----------------------------------------------------------------------------------------------       
+        // turns on the ramp
+
         if (turnTime > 0 && ramp==1 && !(difference/2) && difference != 0){
-          turnLeft();
+          turnLeft();                                                                                               // junctions to turn left
           //turnRight();
-        // junctions to turn right
         }else if (turnTime > 0 && ramp==1 && ((difference/2) || difference == 0)){
-          turnRight();
+          turnRight();                                                                                              // junctions to turn right
           //turnLeft();
-        // junctions to take no turn
         }else if (turnTime > 0 && ramp == 5){
-          noTurn();
+          noTurn();                                                                                                 // junctions to take no turn
         }
         // -----------------------------------------------------------------------------------------------       
         // path 1
         
-        // junctions to turn left
         else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp && path1 && !case6){
-          turnLeft();
-        // junctions to turn right
+          turnLeft();                                                                                               // junctions to turn left
         }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6 || turns==7) && !ramp && path1 && !case6){
-          turnRight();        
+          turnRight();                                                                                              // junctions to turn right     
         }
         // -----------------------------------------------------------------------------------------------       
         // path 2
         
-        // junctions to turn left
         else if (turnTime > 0 && (turns==3 || turns==5) && !ramp && path2 && !case6){
-          turnLeft();
-        // junctions to turn right
+          turnLeft();                                                                                               // junctions to turn left
         }else if (turnTime > 0 && turns==4 && !ramp && path2 && !case6){
-          turnRight();  
+          turnRight();                                                                                              // junctions to turn right
         }
         // -----------------------------------------------------------------------------------------------        
         // path 3
         
-        // junctions to turn left
         else if (turnTime > 0 && (turns==2 || turns==4) && !ramp && path3 && !case6){
-          turnLeft();
-        // junctions to turn right
+          turnLeft();                                                                                               // junctions to turn left
         }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6) && !ramp && path3 && !case6){
-          turnRight();
-        // junctions to take no turn
+          turnRight();                                                                                              // junctions to turn right
         }else if (turnTime > 0 && turns==5 && !ramp && path3 && !case6){
-          noTurn();
+          noTurn();                                                                                                 // junctions to take no turn
         }
         // ----------------------------------------------------------------------------------------------
         
@@ -384,16 +378,15 @@ int main(int argc, char **argv) {
       if (ds_front<133 && case7){
         // adjusting the distance
         if (ds_front<131){
-          leftSpeed = -1;
+          leftSpeed  = -1;
           rightSpeed = -1;
         }else{
           case6 = true;
           case7 = false;
           step0 = true;
-        }
-        
-      }
-      
+        }     
+      } 
+
       if (case6){
         // camera enable
         if (breakTime==1){
@@ -401,15 +394,15 @@ int main(int argc, char **argv) {
         }
         // colour detection
         if (breakTime==18 || breakTime==23 || breakTime==28){
-          int red = 0;
+          int red   = 0;
           int green = 0;
-          int blue = 0;
+          int blue  = 0;
           const unsigned char *image = cam->getImage();
           for (int x = 0; x < 64; x++){
             for (int y = 0; y < 64; y++) {
-              red += cam->imageGetRed(image, 64, x, y);
+              red   += cam->imageGetRed(image, 64, x, y);
               green += cam->imageGetGreen(image, 64, x, y);
-              blue += cam->imageGetBlue(image, 64, x, y);
+              blue  += cam->imageGetBlue(image, 64, x, y);
               }
             }
           if (red>blue && red>green){
@@ -470,26 +463,26 @@ int main(int argc, char **argv) {
         }else if (step0 && ps_arm[1]->getValue()>=0.35){
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
-          step0 = false;
+          step0  = false;
           break0 = true;
         }else if (break0 && breakTime<5){
           breakTime++;
         }else if (break0 && breakTime>=5){
           break0 = false;
-          step1 = true;
+          step1  = true;
         }
         // arm down
         else if (step1 && ps_arm[0]->getValue()<1.4){
           arm[0]->setVelocity(1);
         }else if (step1 && ps_arm[0]->getValue()>=1.4){
           arm[0]->setVelocity(0);
-          step1 = false;
+          step1  = false;
           break1 = true;
         }else if (break1 && breakTime<10){
           breakTime++;
         }else if (break1 && breakTime>=10){
           break1 = false;
-          step2 = true;
+          step2  = true;
         }
         // grab the box
         else if (step2 && timeLimit < 140){
@@ -504,12 +497,12 @@ int main(int argc, char **argv) {
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
           break2 = true;
-          step2 = false;
+          step2  = false;
         }else if (break2 && breakTime<15){
           breakTime++;
         }else if (break2 && breakTime>=15){
           break2 = false;
-          step3 = true;
+          step3  = true;
         }
         // arm up
         else if (step3 && ps_arm[0]->getValue()>1.09){
@@ -517,12 +510,12 @@ int main(int argc, char **argv) {
         }else if (step3 && ps_arm[0]->getValue()<=1.09){
           arm[0]->setVelocity(0);
           break3 = true;
-          step3 = false;
+          step3  = false;
         }else if (break3 && breakTime<20){
           breakTime++;
         }else if (break3 && breakTime>=20){
           break3 = false;
-          step4 = true;
+          step4  = true;
         }
         // rotate the box
         else if (step4 && ps_arm[3]->getValue()>-1.6){
@@ -530,12 +523,12 @@ int main(int argc, char **argv) {
         }else if (step4 && ps_arm[3]->getValue()<=-1.6){
           arm[3]->setVelocity(0);
           break4 = true;
-          step4 = false;
+          step4  = false;
         }else if (break4 && breakTime<25){
           breakTime++;
         }else if (break4 && breakTime>=25){
           break4 = false;
-          step5 = true;
+          step5  = true;
         }
         // rotate the box
         else if (step5 && ps_arm[3]->getValue()>-3.2){
@@ -543,12 +536,12 @@ int main(int argc, char **argv) {
         }else if (step5 && ps_arm[3]->getValue()<=-3.2){
           arm[3]->setVelocity(0);
           break5 = true;
-          step5 = false;
+          step5  = false;
         }else if (break5 && breakTime<30){
           breakTime++;
         }else if (break5 && breakTime>=30){
           break5 = false;
-          step6 = true;
+          step6  = true;
         }
         // turn right
         else if (step6 && turnTime==0){
@@ -556,12 +549,12 @@ int main(int argc, char **argv) {
         }else if (step6 && turnTime==1){
           turnTime = 0;
           break6 = true;
-          step6 = false;
+          step6  = false;
         }else if (break6 && breakTime<35){
           breakTime++;
         }else if (break6 && breakTime>=35){
           break6 = false;
-          step7 = true;
+          step7  = true;
         }
         // release the box
         else if (step7 && ps_arm[1]->getValue()<0.85){
@@ -571,12 +564,12 @@ int main(int argc, char **argv) {
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
           break7 = true;
-          step7 = false;
+          step7  = false;
         }else if (break7 && breakTime<40){
           breakTime++;
         }else if (break7 && breakTime>=40){
           break7 = false;
-          step8 =true;
+          step8  =true;
         }
         // arm up
         else if (step8 && ps_arm[0]->getValue()>0){
@@ -584,19 +577,19 @@ int main(int argc, char **argv) {
         }else if (step8 && ps_arm[0]->getValue()<=0){
           arm[0]->setVelocity(0);
           break8 = true;
-          step8 = false;
+          step8  = false;
         }else if (break8 && breakTime<45){
           breakTime++;
         }else if (break8 && breakTime>=45){
           break8 = false;
-          step9 =true;
+          step9  = true;
         }
         // turn Left
         else if (step9 && turnTime==0){
           turnTime = 20;
         }else if (step9 && turnTime==1){
           turnTime = 0;
-          step9 = false;
+          step9  = false;
           break9 = true;
         }else if (break9&& breakTime<50){
           breakTime++;
@@ -612,13 +605,14 @@ int main(int argc, char **argv) {
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
           break10 = true;
-          step10 = false;
+          step10  = false;
         }else if (break10 && breakTime<55){
           breakTime++;
         }else if (break10 && breakTime>=55){
-          turnTime = 1;
-          break10 = false;
-          case6 = false;
+          break10  = false;
+          case6    = false;
+
+          // calculate the differnce
           if (turns==2 || turns==5){
             difference = abs(side2-side3);
           }else{
@@ -626,15 +620,19 @@ int main(int argc, char **argv) {
           }
           std::cout<<"Difference: "<<difference<<"\n";
         }
-        leftSpeed = 0;
+
+        // stop wheels until the box activities
+        leftSpeed  = 0;
         rightSpeed = 0;
+
+        // turns during the box activities
         if (step6 && turnTime>1){
-          turnRightI();
+          turnRightI();                                        // turn right immediately         
         }else if (step9 && turnTime>1){
-          turnLeftI();
+          turnLeftI();                                         // turn left immediately
         }
       }
-    // ---------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------------
   
 // -------------------------------------------------------------------------------------------------------------
       //get the diameter
@@ -686,7 +684,7 @@ int main(int argc, char **argv) {
       if (((turns==7 && path1) || (turns==5 && path3)) && case10){
         display->drawText("Q=04",13,45);
         std::cout<<"Q=04"<<"\n";
-        case5 = true;
+        case5  = true;
         acc->enable(TIME_STEP);             // enable the accelerometer
         case10 = false;
       }
@@ -702,7 +700,7 @@ int main(int argc, char **argv) {
           duration = 0;
         }
         if (duration>10){
-          ramp=1;
+          ramp     = 1;
           turnTime = 1;
           acc->disable();
           case5 = false;
@@ -728,7 +726,7 @@ int main(int argc, char **argv) {
         std::cout<<"Pillars: "<<poles<<"\n";
         if (poles == 1){
           turnTime = 52;
-          reverse = true;
+          reverse  = true;
         }
         ramp++;        
         case3 = false;
@@ -747,18 +745,19 @@ int main(int argc, char **argv) {
           case11 = false;
           case12 = true;
         }else{
-          leftSpeed = 0;
+          leftSpeed  = 0;
           rightSpeed = 0;
         }
       }
 
       if (ramp && ir[0]->getValue()<500 && ir[7]->getValue()<500 && ds_front<1000 && case12){
-        leftSpeed = 0;
+        leftSpeed  = 0;
         rightSpeed = 0;
       }
     }
 // -------------------------------------------------------------------------------------------------------------------
     
+    // set velocities to wheels
     wheels[0]->setVelocity(leftSpeed);
     wheels[1]->setVelocity(rightSpeed);
   }
