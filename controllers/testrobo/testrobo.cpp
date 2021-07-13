@@ -108,7 +108,7 @@ void turnBack(){
 }
 // ------------------------------------------------------------------------------------------------
 
-// Go forward without turning
+// Go forward without turning function
 void noTurn(){
   turnTime = turnTime-2;
   leftSpeed  = 10;
@@ -384,7 +384,7 @@ int main(int argc, char **argv) {
           cam->enable(TIME_STEP);
         }
         // colour detection
-        if (breakTime==4 || breakTime==27 || breakTime==42){
+        if (breakTime==18 || breakTime==23 || breakTime==28){
           int red = 0;
           int green = 0;
           int blue = 0;
@@ -397,42 +397,42 @@ int main(int argc, char **argv) {
               }
             }
           if (red>blue && red>green){
-            if (breakTime==4){
+            if (breakTime==18){
               side1 = colour_mp["Red"];
             }
-            if (breakTime==27){
+            if (breakTime==23){
               side2 = colour_mp["Red"];
             }
-            if (breakTime==42){
+            if (breakTime==28){
               side3 = colour_mp["Red"];
             }
             std::cout<<"Red"<<"\n";
           }else if (blue>green){
-            if (breakTime==4){
+            if (breakTime==18){
               side1 = colour_mp["Blue"];
             }
-            if (breakTime==27){
+            if (breakTime==23){
               side2 = colour_mp["Blue"];
             }
-            if (breakTime==42){
+            if (breakTime==28){
               side3 = colour_mp["Blue"];
             }
             std::cout<<"Blue"<<"\n";
           }else{
-            if (breakTime==4){
+            if (breakTime==18){
               side1 = colour_mp["Green"];
             }
-            if (breakTime==27){
+            if (breakTime==23){
               side2 = colour_mp["Green"];
             }
-            if (breakTime==42){
+            if (breakTime==28){
               side3 = colour_mp["Green"];
             }
             std::cout<<"Green"<<"\n";
           } 
         }
          // choosing the path and camera disable
-        if (breakTime==44){
+        if (breakTime==31){
           cam->disable();
           if (turns == 2){
             path1 = false;
@@ -519,9 +519,9 @@ int main(int argc, char **argv) {
           breakTime++;
         }else if (break4 && breakTime>=25){
           break4 = false;
-          step5 = true;
+          step7 = true;
         }
-        // arm down
+        /*// arm down
         else if (step5 && ps_arm[0]->getValue()<1.1){
           arm[0]->setVelocity(0.3);
         }else if (step5 && ps_arm[0]->getValue()>=1.1){
@@ -546,7 +546,7 @@ int main(int argc, char **argv) {
         }else if (break6 && breakTime>=35){
           break6 = false;
           step7 = true;
-        }
+        }*/
         // rotate the box
         else if (step7 && ps_arm[3]->getValue()>-3.2){
           arm[3]->setVelocity(-1);
@@ -554,13 +554,13 @@ int main(int argc, char **argv) {
           arm[3]->setVelocity(0);
           break7 = true;
           step7 = false;
-        }else if (break7 && breakTime<40){
+        }else if (break7 && breakTime<30){
           breakTime++;
-        }else if (break7 && breakTime>=40){
+        }else if (break7 && breakTime>=30){
           break7 = false;
-          step8 = true;
+          step9 = true;
         }
-        // arm down
+        /*// arm down
         else if (step8 && ps_arm[0]->getValue()<1.1){
           arm[0]->setVelocity(0.3);
         }else if (step8 && ps_arm[0]->getValue()>=1.1){
@@ -572,7 +572,7 @@ int main(int argc, char **argv) {
         }else if (break8 && breakTime>=45){
           break8 = false;
           step9 = true;
-        }
+        }*/
         // arm side
         else if (step9 && ps_arm[1]->getValue()<0.6){
           arm[1]->setVelocity(1.5);
@@ -582,9 +582,9 @@ int main(int argc, char **argv) {
           arm[2]->setVelocity(0);
           break9 = true;
           step9 = false;
-        }else if (break9 && breakTime<50){
+        }else if (break9 && breakTime<35){
           breakTime++;
-        }else if (break9 && breakTime>=50){
+        }else if (break9 && breakTime>=35){
           break9 = false;
           step10 = true;
         }
@@ -597,9 +597,9 @@ int main(int argc, char **argv) {
           arm[2]->setVelocity(0);
           break10 = true;
           step10 = false;
-        }else if (break10 && breakTime<55){
+        }else if (break10 && breakTime<40){
           breakTime++;
-        }else if (break10 && breakTime>=55){
+        }else if (break10 && breakTime>=40){
           break10 = false;
           step11 =true;
         }
@@ -610,9 +610,9 @@ int main(int argc, char **argv) {
           arm[0]->setVelocity(0);
           break11 = true;
           step11 = false;
-        }else if (break11 && breakTime<60){
+        }else if (break11 && breakTime<45){
           breakTime++;
-        }else if (break11 && breakTime>=60){
+        }else if (break11 && breakTime>=45){
           break11 = false;
           step12 =true;
         }
@@ -625,9 +625,9 @@ int main(int argc, char **argv) {
           arm[2]->setVelocity(0);
           step12 = false;
           break12 = true;
-        }else if (break12 && breakTime<65){
+        }else if (break12 && breakTime<50){
           breakTime++;
-        }else if (break12 && breakTime>=65){
+        }else if (break12 && breakTime>=50){
           break12 = false;
           step13 = true;
         }
@@ -640,9 +640,9 @@ int main(int argc, char **argv) {
           arm[2]->setVelocity(0);
           break13 = true;
           step13 = false;
-        }else if (break13 && breakTime<70){
+        }else if (break13 && breakTime<55){
           breakTime++;
-        }else if (break13 && breakTime>=70){
+        }else if (break13 && breakTime>=55){
           turnTime = 1;
           break13 = false;
           case6 = false;
