@@ -115,6 +115,20 @@ void noTurn(){
   rightSpeed = 10;
   return;
 }
+
+void turnRightI(){
+  turnTime--;
+  leftSpeed = 10;
+  rightSpeed = -10;
+  return;
+}
+
+void turnLeftI(){
+  turnTime--;
+  leftSpeed = -10;
+  rightSpeed = 10;
+  return;
+}
 // ------------------------------------------------------------------------------------------------
 
 int main(int argc, char **argv) {
@@ -234,9 +248,9 @@ int main(int argc, char **argv) {
   bool break8  = false;         bool step8  = false;
   bool break9  = false;         bool step9  = false;
   bool break10 = false;         bool step10 = false;
-  bool break11 = false;         bool step11 = false;
-  bool break12 = false;         bool step12 = false;  
-  bool break13 = false;         bool step13 = false;
+  //bool break11 = false;         bool step11 = false;
+  //bool break12 = false;         bool step12 = false;  
+  //bool break13 = false;         bool step13 = false;
   
   bool case8 = true;            // for quadrant number displaying
   bool case9 = true;
@@ -288,7 +302,7 @@ int main(int argc, char **argv) {
       
     }else{
       // check junctions
-      if (((rightWay<500 && leftWay<500) || (leftWay<500 && frontWay<500) || (rightWay<500 && frontWay<500)) && turnTime==0 && ramp<2){
+      if (((rightWay<500 && leftWay<500) || (leftWay<500 && frontWay<500) || (rightWay<500 && frontWay<500)) && turnTime==0 && ramp<2 && !case6){
         turnTime = 26;
         turns++;
         //std::cout<<turns<<"\n";
@@ -317,33 +331,33 @@ int main(int argc, char **argv) {
         // path 1
         
         // junctions to turn left
-        else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp && path1){
+        else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp && path1 && !case6){
           turnLeft();
         // junctions to turn right
-        }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6 || turns==7) && !ramp && path1){
+        }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6 || turns==7) && !ramp && path1 && !case6){
           turnRight();        
         }
         // -----------------------------------------------------------------------------------------------       
         // path 2
         
         // junctions to turn left
-        else if (turnTime > 0 && (turns==3 || turns==5) && !ramp && path2){
+        else if (turnTime > 0 && (turns==3 || turns==5) && !ramp && path2 && !case6){
           turnLeft();
         // junctions to turn right
-        }else if (turnTime > 0 && turns==4 && !ramp && path2){
+        }else if (turnTime > 0 && turns==4 && !ramp && path2 && !case6){
           turnRight();  
         }
         // -----------------------------------------------------------------------------------------------        
         // path 3
         
         // junctions to turn left
-        else if (turnTime > 0 && (turns==2 || turns==4) && !ramp && path3){
+        else if (turnTime > 0 && (turns==2 || turns==4) && !ramp && path3 && !case6){
           turnLeft();
         // junctions to turn right
-        }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6) && !ramp && path3){
+        }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6) && !ramp && path3 && !case6){
           turnRight();
         // junctions to take no turn
-        }else if (turnTime > 0 && turns==5 && !ramp && path3){
+        }else if (turnTime > 0 && turns==5 && !ramp && path3 && !case6){
           noTurn();
         }
         // ----------------------------------------------------------------------------------------------
@@ -354,7 +368,9 @@ int main(int argc, char **argv) {
         }
         // line following
         else{
-          turnTime = 0;
+          if (!case6){
+            turnTime = 0;
+          }
           lineFollow(ir,kp,kd,ki,baseSpeed);
         }
       }
@@ -519,13 +535,13 @@ int main(int argc, char **argv) {
           breakTime++;
         }else if (break4 && breakTime>=25){
           break4 = false;
-          step7 = true;
+          step5 = true;
         }
-        /*// arm down
-        else if (step5 && ps_arm[0]->getValue()<1.1){
-          arm[0]->setVelocity(0.3);
-        }else if (step5 && ps_arm[0]->getValue()>=1.1){
-          arm[0]->setVelocity(0);
+        // rotate the box
+        else if (step5 && ps_arm[3]->getValue()>-3.2){
+          arm[3]->setVelocity(-1);
+        }else if (step5 && ps_arm[3]->getValue()<=-3.2){
+          arm[3]->setVelocity(0);
           break5 = true;
           step5 = false;
         }else if (break5 && breakTime<30){
@@ -534,11 +550,11 @@ int main(int argc, char **argv) {
           break5 = false;
           step6 = true;
         }
-        // arm up
-        else if (step6 && ps_arm[0]->getValue()>1.09){
-          arm[0]->setVelocity(-0.3);
-        }else if (step6 && ps_arm[0]->getValue()<=1.09){
-          arm[0]->setVelocity(0);
+        // turn right
+        else if (step6 && turnTime==0){
+          turnTime = 20;
+        }else if (step6 && turnTime==1){
+          turnTime = 0;
           break6 = true;
           step6 = false;
         }else if (break6 && breakTime<35){
@@ -546,24 +562,26 @@ int main(int argc, char **argv) {
         }else if (break6 && breakTime>=35){
           break6 = false;
           step7 = true;
-        }*/
-        // rotate the box
-        else if (step7 && ps_arm[3]->getValue()>-3.2){
-          arm[3]->setVelocity(-1);
-        }else if (step7 && ps_arm[3]->getValue()<=-3.2){
-          arm[3]->setVelocity(0);
+        }
+        // release the box
+        else if (step7 && ps_arm[1]->getValue()<0.85){
+          arm[1]->setVelocity(1);
+          arm[2]->setVelocity(-1);
+        }else if (step7 && ps_arm[1]->getValue()>=0.85){
+          arm[1]->setVelocity(0);
+          arm[2]->setVelocity(0);
           break7 = true;
           step7 = false;
-        }else if (break7 && breakTime<30){
+        }else if (break7 && breakTime<40){
           breakTime++;
-        }else if (break7 && breakTime>=30){
+        }else if (break7 && breakTime>=40){
           break7 = false;
-          step9 = true;
+          step8 =true;
         }
-        /*// arm down
-        else if (step8 && ps_arm[0]->getValue()<1.1){
-          arm[0]->setVelocity(0.3);
-        }else if (step8 && ps_arm[0]->getValue()>=1.1){
+        // arm up
+        else if (step8 && ps_arm[0]->getValue()>0){
+          arm[0]->setVelocity(-1);
+        }else if (step8 && ps_arm[0]->getValue()<=0){
           arm[0]->setVelocity(0);
           break8 = true;
           step8 = false;
@@ -571,80 +589,35 @@ int main(int argc, char **argv) {
           breakTime++;
         }else if (break8 && breakTime>=45){
           break8 = false;
-          step9 = true;
-        }*/
-        // arm side
-        else if (step9 && ps_arm[1]->getValue()<0.6){
-          arm[1]->setVelocity(1.5);
-          arm[2]->setVelocity(1.5);
-        }else if (step9 && ps_arm[1]->getValue()>=0.6){
-          arm[1]->setVelocity(0);
-          arm[2]->setVelocity(0);
-          break9 = true;
+          step9 =true;
+        }
+        // turn Left
+        else if (step9 && turnTime==0){
+          turnTime = 20;
+        }else if (step9 && turnTime==1){
+          turnTime = 0;
           step9 = false;
-        }else if (break9 && breakTime<35){
+          break9 = true;
+        }else if (break9&& breakTime<50){
           breakTime++;
-        }else if (break9 && breakTime>=35){
+        }else if (break9 && breakTime>=50){
           break9 = false;
           step10 = true;
         }
-        // release the box
-        else if (step10 && ps_arm[1]->getValue()<0.85){
-          arm[1]->setVelocity(1);
-          arm[2]->setVelocity(-1);
-        }else if (step10 && ps_arm[1]->getValue()>=0.85){
+        // arm restore
+        else if (step10 && ps_arm[1]->getValue()>0){
+          arm[1]->setVelocity(-1);
+          arm[2]->setVelocity(1);
+        }else if (step10 && ps_arm[1]->getValue()<=0){
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
           break10 = true;
           step10 = false;
-        }else if (break10 && breakTime<40){
+        }else if (break10 && breakTime<55){
           breakTime++;
-        }else if (break10 && breakTime>=40){
-          break10 = false;
-          step11 =true;
-        }
-        // arm up
-        else if (step11 && ps_arm[0]->getValue()>0){
-          arm[0]->setVelocity(-1);
-        }else if (step11 && ps_arm[0]->getValue()<=0){
-          arm[0]->setVelocity(0);
-          break11 = true;
-          step11 = false;
-        }else if (break11 && breakTime<45){
-          breakTime++;
-        }else if (break11 && breakTime>=45){
-          break11 = false;
-          step12 =true;
-        }
-        // arm middle
-        else if (step12 && ps_arm[1]->getValue()>0.25){
-          arm[1]->setVelocity(-1);
-          arm[2]->setVelocity(-1);
-        }else if (step12 && ps_arm[1]->getValue()<=0.25){
-          arm[1]->setVelocity(0);
-          arm[2]->setVelocity(0);
-          step12 = false;
-          break12 = true;
-        }else if (break12 && breakTime<50){
-          breakTime++;
-        }else if (break12 && breakTime>=50){
-          break12 = false;
-          step13 = true;
-        }
-        // arm restore
-        else if (step13 && ps_arm[1]->getValue()>0){
-          arm[1]->setVelocity(-1);
-          arm[2]->setVelocity(1);
-        }else if (step13 && ps_arm[1]->getValue()<=0){
-          arm[1]->setVelocity(0);
-          arm[2]->setVelocity(0);
-          break13 = true;
-          step13 = false;
-        }else if (break13 && breakTime<55){
-          breakTime++;
-        }else if (break13 && breakTime>=55){
+        }else if (break10 && breakTime>=55){
           turnTime = 1;
-          break13 = false;
+          break10 = false;
           case6 = false;
           if (turns==2 || turns==5){
             difference = abs(side2-side3);
@@ -655,6 +628,11 @@ int main(int argc, char **argv) {
         }
         leftSpeed = 0;
         rightSpeed = 0;
+        if (step6 && turnTime>1){
+          turnRightI();
+        }else if (step9 && turnTime>1){
+          turnLeftI();
+        }
       }
     // ---------------------------------------------------------------------------------------------
   
