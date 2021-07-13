@@ -106,8 +106,9 @@ void turnBack(){
   rightSpeed = 10;
   return;
 }
+// ------------------------------------------------------------------------------------------------
 
-
+// Go forward without turning
 void noTurn(){
   turnTime = turnTime-2;
   leftSpeed  = 10;
@@ -237,17 +238,17 @@ int main(int argc, char **argv) {
   bool break12 = false;         bool step12 = false;  
   bool break13 = false;         bool step13 = false;
   
-  bool case8 = true;             // for quadrant number displaying
+  bool case8 = true;            // for quadrant number displaying
   bool case9 = true;
   bool case10 = true;
   
   bool case11 = true;
   bool case12 = false;
   
-  bool case13 = true;
+  bool case13 = true;          // after reverse situation
   bool reverse = false;
   
-  bool path1 = true;
+  bool path1 = true;           // making three paths to get shortest path
   bool path2 = false;
   bool path3 = false;
   
@@ -298,8 +299,7 @@ int main(int argc, char **argv) {
       // wall at left
       }else if (ds_left < 900 && frontWay>500 && leftWay>500 && rightWay>500){
         wallFollow(ds_left,kp,kd,ki,baseSpeed,1);    
-      }
-      // check that there are no walls
+      }// check that there are no walls
       else{
         // junctions to turn left
         if (turnTime > 0 && ramp==1 && !(difference/2) && difference != 0){
@@ -309,31 +309,47 @@ int main(int argc, char **argv) {
         }else if (turnTime > 0 && ramp==1 && ((difference/2) || difference == 0)){
           turnRight();
           //turnLeft();
-        // junctions to turn left
+        // junctions to take no turn
         }else if (turnTime > 0 && ramp == 5){
           noTurn();
-        }else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp && path1){
+        }
+        // -----------------------------------------------------------------------------------------------       
+        // path 1
+        
+        // junctions to turn left
+        else if (turnTime > 0 && (turns==2 || turns==4 || turns==5 || turns==8) && !ramp && path1){
           turnLeft();
         // junctions to turn right
         }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6 || turns==7) && !ramp && path1){
-          turnRight();
+          turnRight();        
+        }
+        // -----------------------------------------------------------------------------------------------       
+        // path 2
+        
         // junctions to turn left
-        }else if (turnTime > 0 && (turns==3 || turns==5) && !ramp && path2){
+        else if (turnTime > 0 && (turns==3 || turns==5) && !ramp && path2){
           turnLeft();
         // junctions to turn right
         }else if (turnTime > 0 && turns==4 && !ramp && path2){
-          turnRight();
+          turnRight();  
+        }
+        // -----------------------------------------------------------------------------------------------        
+        // path 3
+        
         // junctions to turn left
-        }else if (turnTime > 0 && (turns==2 || turns==4) && !ramp && path3){
+        else if (turnTime > 0 && (turns==2 || turns==4) && !ramp && path3){
           turnLeft();
         // junctions to turn right
         }else if (turnTime > 0 && (turns==1 || turns==3 || turns==6) && !ramp && path3){
           turnRight();
-        // turn back
+        // junctions to take no turn
         }else if (turnTime > 0 && turns==5 && !ramp && path3){
           noTurn();
-        // junctions to turn right
-        }else if (turnTime > 0 && poles){
+        }
+        // ----------------------------------------------------------------------------------------------
+        
+        // junction to turn back
+        else if (turnTime > 0 && poles){
           turnBack();
         }
         // line following
@@ -415,7 +431,7 @@ int main(int argc, char **argv) {
             std::cout<<"Green"<<"\n";
           } 
         }
-         // camera disable
+         // choosing the path and camera disable
         if (breakTime==44){
           cam->disable();
           if (turns == 2){
@@ -714,6 +730,7 @@ int main(int argc, char **argv) {
           case5 = false;
         }    
       }
+      
 // -----------------------------------------------------------------------------------------------------------------    
       // count the poles
       
@@ -738,15 +755,13 @@ int main(int argc, char **argv) {
         ramp++;        
         case3 = false;
       }
-      
+      // after reversing, go forward on next junction
       if (reverse && (leftWay<500 || rightWay<500) && case13  && ramp == 4){
         turnTime = 26;
         ramp++;
-        //std::cout<<ramp<<"\n";
-        //case13 = false;
+        case13 = false;
       }
-      //std::cout<<"ramp: "<<ramp<<"\n";
-      //std::cout<<"pillar: "<<poles<<"\n";
+
 // ------------------------------------------------------------------------------------------------------------------
       // gate passing
       if (ramp && ir[0]->getValue()<500 && ir[7]->getValue()<500 && case11){
