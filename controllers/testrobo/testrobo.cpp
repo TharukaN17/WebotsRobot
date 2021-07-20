@@ -172,8 +172,11 @@ int main(int argc, char **argv) {
   }
   
   // position sensor of a wheel
-  PositionSensor *ps;
-  ps = robot->getPositionSensor("psSensor");
+  PositionSensor *ps[2];
+  char ps_names[2][18] = {"psSensorRight","psSensorLeft"};
+  for (int i = 0; i < 2; i++) {
+    ps[i] = robot->getPositionSensor(ps_names[i]);
+  }
   
   // accelerometer for detecting the ramp
   Accelerometer *acc;
@@ -219,6 +222,10 @@ int main(int argc, char **argv) {
   
   double start  = 0;              // for calculating the diameter
   double end    = 0;
+  double start1 = 0;
+  double start2 = 0;
+  double end1   = 0;
+  double end2   = 0;
   bool   case1  = true;
   bool   case2  = true;
   
@@ -638,12 +645,17 @@ int main(int argc, char **argv) {
       //get the diameter
           
       if (turns==2 && case1){
-        start = ps->getValue();
-        case1 = false;
+        start1 = ps[0]->getValue();
+        start2 = ps[1]->getValue();
+        case1  = false;
       }
       if ((turns==4) && case2){
-        end = ps->getValue();
-        ps->disable();
+        end1    = ps[0]->getValue();
+        end2    = ps[1]->getValue();
+        ps[0]   ->disable();
+        ps[1]   ->disable();
+        start   = (start1+start2)/2.0;
+        end     = (end1+end2)/2.0;
         int dis = (end-start)*3.5;
         std::cout<<"Diameter: "<<dis<<"cm"<<"\n";
         
@@ -664,7 +676,8 @@ int main(int argc, char **argv) {
       if (turns==1 && case8){
         display->drawText("Q-01",13,25);
         std::cout<<"Q=01"<<"\n";
-        ps->enable(TIME_STEP);              // enable the position sensor of the wheel
+        ps[0]->enable(TIME_STEP);              // enable the position sensor of the wheel
+        ps[1]->enable(TIME_STEP);
         case8 = false;
       }
       if (turns==4 && case9){
