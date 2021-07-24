@@ -72,7 +72,7 @@ void wallFollow(int &ds,double &kp,double &kd,double &ki,double &baseSpeed, int 
     I = 0;
   }
   double correction = kd*D + kp*P + ki*I;
-  if (direction){
+  if (!direction){
     correction = -correction;
   }
   leftSpeed = baseSpeed + correction;      leftSpeed = limit(leftSpeed);
@@ -280,7 +280,7 @@ int main(int argc, char **argv) {
     int ds_left  = ds[0]->getValue();
     int ds_front = ds[1]->getValue();
     int ds_right = ds[2]->getValue();
-    std::cout<<ds_front<<"\n";
+    //std::cout<<ds_right<<"\n";
     
     // junction detecting ir sensor values
     int leftWay  = bottom[0]->getValue();
@@ -317,10 +317,10 @@ int main(int argc, char **argv) {
         //std::cout<<turns<<"\n";
       }
       // wall at right 
-      if (ds_right < 900 && frontWay>500 && leftWay>500 && rightWay>500){
+      if (ds_right > 700 && frontWay>500 && leftWay>500 && rightWay>500){
         wallFollow(ds_right,kp,kd,ki,baseSpeed,0);
       // wall at left
-      }else if (ds_left < 900 && frontWay>500 && leftWay>500 && rightWay>500){
+      }else if (ds_left > 700 && frontWay>500 && leftWay>500 && rightWay>500){
         wallFollow(ds_left,kp,kd,ki,baseSpeed,1);    
       }// checked that there are no walls
       else{
@@ -725,7 +725,7 @@ int main(int argc, char **argv) {
       // count the poles
       
       if (ramp){
-        if (ds_right < 500 || ds_left < 500){
+        if (ds_right > 600 || ds_left > 600){
           if (case4){
             poles++;
             ramp++;
