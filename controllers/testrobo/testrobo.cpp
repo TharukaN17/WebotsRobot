@@ -280,6 +280,7 @@ int main(int argc, char **argv) {
     int ds_left  = ds[0]->getValue();
     int ds_front = ds[1]->getValue();
     int ds_right = ds[2]->getValue();
+    std::cout<<ds_front<<"\n";
     
     // junction detecting ir sensor values
     int leftWay  = bottom[0]->getValue();
@@ -382,9 +383,9 @@ int main(int argc, char **argv) {
    //-------------------------------------------------------------------------------------------
       // detect the box
       
-      if (ds_front<133 && case7){
+      if (ds_front<375 && case7){
         // adjusting the distance
-        if (ds_front<131){
+        if (ds_front<370){
           leftSpeed  = -1;
           rightSpeed = -1;
         }else{
@@ -763,7 +764,7 @@ int main(int argc, char **argv) {
         }
       }
 
-      if (ramp && ir[0]->getValue()<500 && ir[7]->getValue()<500 && ds_front<1000 && case12){
+      if (ramp && ir[0]->getValue()<500 && ir[7]->getValue()<500 && ds_front<1800 && case12){
         leftSpeed  = 0;
         rightSpeed = 0;
       }
