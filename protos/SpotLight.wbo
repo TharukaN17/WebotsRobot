@@ -1,0 +1,11 @@
+#VRML_OBJ R2021a utf8
+DEF Light SpotLight {
+  attenuation 0 0 1
+  beamWidth 1.5
+  cutOffAngle 1.57
+  direction 0 -1 0
+  intensity 10
+  location 1 3.8 -2.5
+  radius 10
+  castShadows TRUE
+}
