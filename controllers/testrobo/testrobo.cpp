@@ -494,7 +494,7 @@ int main(int argc, char **argv) {
           step2  = true;
         }
         // grab the box
-        else if (step2 && timeLimit < 140){
+        else if (step2 && timeLimit < 150){
           timeLimit++;
           arm[2]->setVelocity(0.2);
           if (ps_arm[1]->getValue()<0){
@@ -502,7 +502,7 @@ int main(int argc, char **argv) {
           }else{
             arm[1]->setVelocity(-0.2);
           }
-        }else if (step2 && timeLimit >= 140){
+        }else if (step2 && timeLimit >= 150){
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
           break2 = true;
