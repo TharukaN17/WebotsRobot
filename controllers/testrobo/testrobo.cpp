@@ -304,7 +304,7 @@ int main(int argc, char **argv) {
         leftSpeed  = 0;
         rightSpeed = 0;
       }else{
-        starting   = 20;
+        starting   = 50;
         leftSpeed  = 10;
         rightSpeed = 10;
       }
