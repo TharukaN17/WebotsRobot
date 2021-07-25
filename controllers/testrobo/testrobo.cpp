@@ -20,6 +20,7 @@ static int      I           = 0;
 static double   leftSpeed;
 static double   rightSpeed;
 static int      turnTime;
+static int      lineCutoff = 500;
 
 // ------------------------------------------------------------------------------------------------
 
@@ -39,7 +40,7 @@ double limit(double &val){
 void lineFollow(DistanceSensor* ir[],double &kp,double &kd,double &ki,double &baseSpeed){
   int error = 0; 
   for (int i=0;i<8;i++){
-    if (ir[i]->getValue()<500){
+    if (ir[i]->getValue()<lineCutoff){
       if (i<4){
         error += i+1;
       }else{
@@ -280,7 +281,7 @@ int main(int argc, char **argv) {
     int ds_left  = ds[0]->getValue();
     int ds_front = ds[1]->getValue();
     int ds_right = ds[2]->getValue();
-    //std::cout<<ds_right<<"\n";
+    //std::cout<<ir[0]->getValue()<<"\n";
     
     // junction detecting ir sensor values
     int leftWay  = bottom[0]->getValue();
@@ -299,7 +300,7 @@ int main(int argc, char **argv) {
     }
     
     // stop & start conditions
-    else if (leftWay<500 && frontWay<500 && rightWay<500 && backWay<500){
+    else if (leftWay<lineCutoff && frontWay<lineCutoff && rightWay<lineCutoff && backWay<lineCutoff){
       if (ramp){
         leftSpeed  = 0;
         rightSpeed = 0;
@@ -311,16 +312,16 @@ int main(int argc, char **argv) {
       
     }else{
       // check junctions
-      if (((rightWay<500 && leftWay<500) || (leftWay<500 && frontWay<500) || (rightWay<500 && frontWay<500)) && turnTime==0 && ramp<2 && !case6){
+      if (((rightWay<lineCutoff && leftWay<lineCutoff) || (leftWay<lineCutoff && frontWay<lineCutoff) || (rightWay<lineCutoff && frontWay<lineCutoff)) && turnTime==0 && ramp<2 && !case6){
         turnTime = 26;
         turns++;
         //std::cout<<turns<<"\n";
       }
       // wall at right 
-      if (ds_right > 700 && frontWay>500 && leftWay>500 && rightWay>500){
+      if (ds_right > 700 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
         wallFollow(ds_right,kp,kd,ki,baseSpeed,0);
       // wall at left
-      }else if (ds_left > 700 && frontWay>500 && leftWay>500 && rightWay>500){
+      }else if (ds_left > 700 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
         wallFollow(ds_left,kp,kd,ki,baseSpeed,1);    
       }// checked that there are no walls
       else{
@@ -736,7 +737,7 @@ int main(int argc, char **argv) {
         }     
       }
       // checking the path
-      if (poles && (leftWay<500 || rightWay<500) && case3){
+      if (poles && (leftWay<lineCutoff || rightWay<lineCutoff) && case3){
         std::cout<<"Pillars: "<<poles<<"\n";
         if (poles == 1){
           turnTime = 52;
@@ -746,7 +747,7 @@ int main(int argc, char **argv) {
         case3 = false;
       }
       // after reversing, go forward on next junction
-      if (reverse && (leftWay<500 || rightWay<500) && case13  && ramp == 4){
+      if (reverse && (leftWay<lineCutoff || rightWay<lineCutoff) && case13  && ramp == 4){
         turnTime = 26;
         ramp++;
         case13 = false;
@@ -754,7 +755,7 @@ int main(int argc, char **argv) {
 
 // ------------------------------------------------------------------------------------------------------------------
       // gate passing
-      if (ramp && ir[0]->getValue()<500 && ir[7]->getValue()<500 && case11){
+      if (ramp && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && case11){
         if (ds_front<1000){
           case11 = false;
           case12 = true;
@@ -764,7 +765,7 @@ int main(int argc, char **argv) {
         }
       }
 
-      if (ramp && ir[0]->getValue()<500 && ir[7]->getValue()<500 && ds_front<1800 && case12){
+      if (ramp && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && ds_front<1800 && case12){
         leftSpeed  = 0;
         rightSpeed = 0;
       }
