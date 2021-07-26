@@ -318,10 +318,10 @@ int main(int argc, char **argv) {
         //std::cout<<turns<<"\n";
       }
       // wall at right 
-      if (ds_right > 700 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
+      if (ds_right > 900 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
         wallFollow(ds_right,kp,kd,ki,baseSpeed,0);
       // wall at left
-      }else if (ds_left > 700 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
+      }else if (ds_left > 900 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
         wallFollow(ds_left,kp,kd,ki,baseSpeed,1);    
       }// checked that there are no walls
       else{
@@ -494,15 +494,15 @@ int main(int argc, char **argv) {
           step2  = true;
         }
         // grab the box
-        else if (step2 && timeLimit < 140){
+        else if (step2 && timeLimit < 100){
           timeLimit++;
-          arm[2]->setVelocity(0.2);
+          arm[2]->setVelocity(0.3);
           if (ps_arm[1]->getValue()<0){
             arm[1]->setVelocity(0);
           }else{
-            arm[1]->setVelocity(-0.2);
+            arm[1]->setVelocity(-0.3);
           }
-        }else if (step2 && timeLimit >= 140){
+        }else if (step2 && timeLimit >= 100){
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
           break2 = true;
