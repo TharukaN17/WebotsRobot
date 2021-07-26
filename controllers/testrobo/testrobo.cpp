@@ -329,11 +329,11 @@ int main(int argc, char **argv) {
         // turns on the ramp
 
         if (turnTime > 0 && ramp==1 && !(difference/2) && difference != 0){
-          turnLeft();                                                                                               // junctions to turn left
-          //turnRight();
+          //turnLeft();                                                                                               // junctions to turn left
+          turnRight();
         }else if (turnTime > 0 && ramp==1 && ((difference/2) || difference == 0)){
-          turnRight();                                                                                              // junctions to turn right
-          //turnLeft();
+          //turnRight();                                                                                              // junctions to turn right
+          turnLeft();
         }else if (turnTime > 0 && ramp == 5){
           noTurn();                                                                                                 // junctions to take no turn
         }
@@ -658,7 +658,7 @@ int main(int argc, char **argv) {
         ps[1]   ->disable();
         start   = (start1+start2)/2.0;
         end     = (end1+end2)/2.0;
-        int dis = (end-start)*3.5;
+        int dis = (end-start)*3.5 + 10;
         std::cout<<"Diameter: "<<dis<<"cm"<<"\n";
         
         // display the diameter
@@ -688,8 +688,8 @@ int main(int argc, char **argv) {
           std::cout<<"Q=03"<<"\n";
           case9 = false;
         }else{
-          display->drawText("Q-04",13,35);
-          std::cout<<"Q=04"<<"\n";
+          display->drawText("Q-02",13,35);
+          std::cout<<"Q=02"<<"\n";
           case5 = true;
           acc->enable(TIME_STEP);             // enable the accelerometer
           case9 = false;
@@ -697,8 +697,8 @@ int main(int argc, char **argv) {
         
       }
       if (((turns==7 && path1) || (turns==5 && path3)) && case10){
-        display->drawText("Q=04",13,45);
-        std::cout<<"Q=04"<<"\n";
+        display->drawText("Q=02",13,45);
+        std::cout<<"Q=02"<<"\n";
         case5  = true;
         acc->enable(TIME_STEP);             // enable the accelerometer
         case10 = false;
