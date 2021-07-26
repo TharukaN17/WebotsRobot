@@ -692,6 +692,7 @@ int main(int argc, char **argv) {
           std::cout<<"Q=02"<<"\n";
           case5 = true;
           acc->enable(TIME_STEP);             // enable the accelerometer
+          baseSpeed = 10;
           case9 = false;
         }
         
@@ -701,6 +702,7 @@ int main(int argc, char **argv) {
         std::cout<<"Q=02"<<"\n";
         case5  = true;
         acc->enable(TIME_STEP);             // enable the accelerometer
+        baseSpeed = 10;
         case10 = false;
       }
 
