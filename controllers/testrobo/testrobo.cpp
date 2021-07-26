@@ -103,8 +103,8 @@ void turnRight(){
 // Back turning function
 void turnBack(){
   turnTime--;
-  leftSpeed  = -10;
-  rightSpeed = 10;
+  leftSpeed  = -8;
+  rightSpeed = 8;
   return;
 }
 // ------------------------------------------------------------------------------------------------
@@ -112,8 +112,8 @@ void turnBack(){
 // Go forward without turning function
 void noTurn(){
   turnTime   = turnTime-2;
-  leftSpeed  = 10;
-  rightSpeed = 10;
+  leftSpeed  = 8;
+  rightSpeed = 8;
   return;
 }
 // ------------------------------------------------------------------------------------------------
@@ -121,8 +121,8 @@ void noTurn(){
 // Immidiate right turning function
 void turnRightI(){
   turnTime--;
-  leftSpeed  = 10;
-  rightSpeed = -10;
+  leftSpeed  = 8;
+  rightSpeed = -8;
   return;
 }
 // ------------------------------------------------------------------------------------------------
@@ -130,8 +130,8 @@ void turnRightI(){
 // Immidiate left turning function
 void turnLeftI(){
   turnTime--;
-  leftSpeed  = -10;
-  rightSpeed = 10;
+  leftSpeed  = -8;
+  rightSpeed = 8;
   return;
 }
 // ------------------------------------------------------------------------------------------------
@@ -216,7 +216,7 @@ int main(int argc, char **argv) {
   double kp         = 1;          // line following parameters
   double kd         = 0.05;
   double ki         = 0.08;
-  double baseSpeed  = 10;
+  double baseSpeed  = 8;
   
   turnTime  = 0;                  // variables for taking turns
   int turns = 0;
@@ -289,13 +289,13 @@ int main(int argc, char **argv) {
     int rightWay = bottom[2]->getValue();
     int backWay  = bottom[3]->getValue();
       
-    leftSpeed  = 10;
-    rightSpeed = 10;
+    leftSpeed  = 8;
+    rightSpeed = 8;
     
     // starting time
     if (starting){
-      leftSpeed  = 10;
-      rightSpeed = 10;
+      leftSpeed  = 8;
+      rightSpeed = 8;
       starting--;
     }
     
@@ -306,8 +306,8 @@ int main(int argc, char **argv) {
         rightSpeed = 0;
       }else{
         starting   = 50;
-        leftSpeed  = 10;
-        rightSpeed = 10;
+        leftSpeed  = 8;
+        rightSpeed = 8;
       }
       
     }else{
