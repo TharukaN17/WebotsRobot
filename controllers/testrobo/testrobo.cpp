@@ -213,9 +213,9 @@ int main(int argc, char **argv) {
   
   int starting = 0;               // for the starting
    
-  double kp         = 1;          // line following parameters
-  double kd         = 0.05;
-  double ki         = 0.08;
+  double kp         = 2.0;          // line following parameters
+  double kd         = 1.5;
+  double ki         = 0.01;
   double baseSpeed  = 8;
   
   turnTime  = 0;                  // variables for taking turns
@@ -318,10 +318,10 @@ int main(int argc, char **argv) {
         //std::cout<<turns<<"\n";
       }
       // wall at right 
-      if (ds_right > 900 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
+      if (ds_right > 1200 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
         wallFollow(ds_right,kp,kd,ki,baseSpeed,0);
       // wall at left
-      }else if (ds_left > 900 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
+      }else if (ds_left > 1200 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
         wallFollow(ds_left,kp,kd,ki,baseSpeed,1);    
       }// checked that there are no walls
       else{
