@@ -100,15 +100,6 @@ void turnRight(){
 }
 // ------------------------------------------------------------------------------------------------
 
-// Back turning function
-void turnBack(){
-  turnTime--;
-  leftSpeed  = -8;
-  rightSpeed = 8;
-  return;
-}
-// ------------------------------------------------------------------------------------------------
-
 // Go forward without turning function
 void noTurn(){
   turnTime   = turnTime-2;
@@ -150,7 +141,7 @@ int main(int argc, char **argv) {
   
   // wallfollowing distance sesors
   DistanceSensor *ds[3];
-  char dsNames[3][10] = {"ir_left","ir_front","ir_right"};
+  char dsNames[3][12] = {"ir_left","ultraSonic","ir_right"};
   for (int i = 0; i<3; i++){
     ds[i] = robot->getDistanceSensor(dsNames[i]);
     ds[i]->enable(TIME_STEP);
@@ -367,7 +358,7 @@ int main(int argc, char **argv) {
         
         // junction to turn back
         else if (turnTime > 0 && poles){
-          turnBack();
+          turnLeftI();
         }
         // line following
         else{
