@@ -281,7 +281,7 @@ int main(int argc, char **argv) {
     int ds_left  = ds[0]->getValue();
     int ds_front = ds[1]->getValue();
     int ds_right = ds[2]->getValue();
-    //std::cout<<ir[0]->getValue()<<"\n";
+    //std::cout<<baseSpeed<<"\n";
     
     // junction detecting ir sensor values
     int leftWay  = bottom[0]->getValue();
@@ -718,7 +718,7 @@ int main(int argc, char **argv) {
         }
         if (duration>10){
           ramp     = 1;
-          turnTime = 1;
+          turnTime = 0;
           acc->disable();
           case5 = false;
         }    
