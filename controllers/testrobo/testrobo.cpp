@@ -272,7 +272,6 @@ int main(int argc, char **argv) {
     int ds_left  = ds[0]->getValue();
     int ds_front = ds[1]->getValue();
     int ds_right = ds[2]->getValue();
-    //std::cout<<baseSpeed<<"\n";
     
     // junction detecting ir sensor values
     int leftWay  = bottom[0]->getValue();
@@ -306,7 +305,6 @@ int main(int argc, char **argv) {
       if (((rightWay<lineCutoff && leftWay<lineCutoff) || (leftWay<lineCutoff && frontWay<lineCutoff) || (rightWay<lineCutoff && frontWay<lineCutoff)) && turnTime==0 && ramp<2 && !case6){
         turnTime = 26;
         turns++;
-        //std::cout<<turns<<"\n";
       }
       // wall at right 
       if (ds_right > 1200 && frontWay>lineCutoff && leftWay>lineCutoff && rightWay>lineCutoff){
@@ -319,11 +317,9 @@ int main(int argc, char **argv) {
         // -----------------------------------------------------------------------------------------------       
         // turns on the ramp
 
-        if (turnTime > 0 && ramp==1 && difference%2){
-          //turnLeft();                                                                                               // junctions to turn left
+        if (turnTime > 0 && ramp==1 && difference%2){                                                               // junctions to turn left
           turnRight();
-        }else if (turnTime > 0 && ramp==1 && !(difference%2)){
-          //turnRight();                                                                                              // junctions to turn right
+        }else if (turnTime > 0 && ramp==1 && !(difference%2)){                                                      // junctions to turn right
           turnLeft();
         }else if (turnTime > 0 && ramp == 5){
           noTurn();                                                                                                 // junctions to take no turn
