@@ -204,8 +204,8 @@ int main(int argc, char **argv) {
   
   int starting = 0;               // for the starting
    
-  double kp         = 2.71;          // line following parameters
-  double kd         = 0.3;
+  double kp         = 3.20;          // line following parameters
+  double kd         = 0.5;
   double ki         = 0.01;
   double baseSpeed  = 8;
   
@@ -272,7 +272,7 @@ int main(int argc, char **argv) {
     int ds_left  = ds[0]->getValue();
     int ds_front = ds[1]->getValue();
     int ds_right = ds[2]->getValue();
-    
+
     // junction detecting ir sensor values
     int leftWay  = bottom[0]->getValue();
     int frontWay = bottom[1]->getValue();
@@ -683,7 +683,7 @@ int main(int argc, char **argv) {
           std::cout<<"Q=02"<<"\n";
           case5 = true;
           acc->enable(TIME_STEP);             // enable the accelerometer
-          baseSpeed = 10;
+          baseSpeed = 9;
           case9 = false;
         }
         
@@ -693,7 +693,7 @@ int main(int argc, char **argv) {
         std::cout<<"Q=02"<<"\n";
         case5  = true;
         acc->enable(TIME_STEP);             // enable the accelerometer
-        baseSpeed = 10;
+        baseSpeed = 9;
         case10 = false;
       }
 
@@ -723,6 +723,7 @@ int main(int argc, char **argv) {
           if (case4){
             poles++;
             ramp++;
+            baseSpeed = 8;
           }        
           case4 = false;
         }else{
@@ -748,7 +749,7 @@ int main(int argc, char **argv) {
 
 // ------------------------------------------------------------------------------------------------------------------
       // gate passing
-      if (ramp && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && case11){
+      if (poles && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && case11){
         if (ds_front<1500){
           case11 = false;
           case12 = true;
@@ -758,7 +759,7 @@ int main(int argc, char **argv) {
         }
       }
 
-      if (ramp && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && ds_front<1500 && case12){
+      if (poles && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && ds_front<1500 && case12){
         leftSpeed  = 0;
         rightSpeed = 0;
       }
