@@ -42,9 +42,9 @@ void lineFollow(DistanceSensor* ir[],double &kp,double &kd,double &ki,double &ba
   for (int i=0;i<8;i++){
     if (ir[i]->getValue()<lineCutoff){
       if (i<4){
-        error += i+1;
+        error += 100;
       }else{
-        error += -(i-3);
+        error -= 100;
       }
     }
   }
@@ -55,7 +55,7 @@ void lineFollow(DistanceSensor* ir[],double &kp,double &kd,double &ki,double &ba
   if (error == 0){
     I = 0;
   }
-  double correction = kd*D + kp*P + ki*I;  
+  double correction = ( kd*D + kp*P + ki*I )/80.0;  
   leftSpeed = baseSpeed - correction;      leftSpeed = limit(leftSpeed);
   rightSpeed = baseSpeed + correction;     rightSpeed = limit(rightSpeed);
   return;
@@ -64,7 +64,7 @@ void lineFollow(DistanceSensor* ir[],double &kp,double &kd,double &ki,double &ba
 
 // wallfollowing function
 void wallFollow(int &ds,double &kp,double &kd,double &ki,double &baseSpeed, int direction){
-  double error = (ds - 650)/100;   
+  double error = ds - 1150;   
   int P = error;
   int D = error - lastError;
   I = I + error;
@@ -72,7 +72,7 @@ void wallFollow(int &ds,double &kp,double &kd,double &ki,double &baseSpeed, int 
   if (error == 0){
     I = 0;
   }
-  double correction = kd*D + kp*P + ki*I;
+  double correction = ( kd*D + kp*P + ki*I)/200.0;
   if (!direction){
     correction = -correction;
   }
@@ -204,8 +204,8 @@ int main(int argc, char **argv) {
   
   int starting = 0;               // for the starting
    
-  double kp         = 2.0;          // line following parameters
-  double kd         = 1.5;
+  double kp         = 2.71;          // line following parameters
+  double kd         = 0.3;
   double ki         = 0.01;
   double baseSpeed  = 8;
   
@@ -485,15 +485,15 @@ int main(int argc, char **argv) {
           step2  = true;
         }
         // grab the box
-        else if (step2 && timeLimit < 100){
+        else if (step2 && timeLimit < 140){
           timeLimit++;
-          arm[2]->setVelocity(0.3);
+          arm[2]->setVelocity(0.2);
           if (ps_arm[1]->getValue()<0){
             arm[1]->setVelocity(0);
           }else{
-            arm[1]->setVelocity(-0.3);
+            arm[1]->setVelocity(-0.2);
           }
-        }else if (step2 && timeLimit >= 100){
+        }else if (step2 && timeLimit >= 140){
           arm[1]->setVelocity(0);
           arm[2]->setVelocity(0);
           break2 = true;
@@ -519,7 +519,7 @@ int main(int argc, char **argv) {
         }
         // rotate the box
         else if (step4 && ps_arm[3]->getValue()>-1.6){
-          arm[3]->setVelocity(-1);
+          arm[3]->setVelocity(-0.3);
         }else if (step4 && ps_arm[3]->getValue()<=-1.6){
           arm[3]->setVelocity(0);
           break4 = true;
@@ -532,7 +532,7 @@ int main(int argc, char **argv) {
         }
         // rotate the box
         else if (step5 && ps_arm[3]->getValue()>-3.2){
-          arm[3]->setVelocity(-1);
+          arm[3]->setVelocity(-0.3);
         }else if (step5 && ps_arm[3]->getValue()<=-3.2){
           arm[3]->setVelocity(0);
           break5 = true;
@@ -719,7 +719,7 @@ int main(int argc, char **argv) {
       // count the poles
       
       if (ramp){
-        if (ds_right > 600 || ds_left > 600){
+        if (ds_right > 800 || ds_left > 800){
           if (case4){
             poles++;
             ramp++;
@@ -749,7 +749,7 @@ int main(int argc, char **argv) {
 // ------------------------------------------------------------------------------------------------------------------
       // gate passing
       if (ramp && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && case11){
-        if (ds_front<1000){
+        if (ds_front<1500){
           case11 = false;
           case12 = true;
         }else{
@@ -758,7 +758,7 @@ int main(int argc, char **argv) {
         }
       }
 
-      if (ramp && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && ds_front<1800 && case12){
+      if (ramp && ir[0]->getValue()<lineCutoff && ir[7]->getValue()<lineCutoff && ds_front<1500 && case12){
         leftSpeed  = 0;
         rightSpeed = 0;
       }
