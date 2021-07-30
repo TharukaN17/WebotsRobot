@@ -319,10 +319,10 @@ int main(int argc, char **argv) {
         // -----------------------------------------------------------------------------------------------       
         // turns on the ramp
 
-        if (turnTime > 0 && ramp==1 && !(difference/2) && difference != 0){
+        if (turnTime > 0 && ramp==1 && difference%2){
           //turnLeft();                                                                                               // junctions to turn left
           turnRight();
-        }else if (turnTime > 0 && ramp==1 && ((difference/2) || difference == 0)){
+        }else if (turnTime > 0 && ramp==1 && !(difference%2)){
           //turnRight();                                                                                              // junctions to turn right
           turnLeft();
         }else if (turnTime > 0 && ramp == 5){
@@ -358,7 +358,11 @@ int main(int argc, char **argv) {
         
         // junction to turn back
         else if (turnTime > 0 && poles){
-          turnLeftI();
+          if (difference%2){
+            turnLeftI();
+          }else{
+            turnRightI();
+          }  
         }
         // line following
         else{
