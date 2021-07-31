@@ -240,7 +240,7 @@ int main(int argc, char **argv) {
   bool case6      = false;
   bool case7      = true;
   
-  bool break0  = false;         bool step0  = false;                // arm movements which have 14 steps and 14 break times
+  bool break0  = false;         bool step0  = false;                // arm movements which have 11 steps and 11 break times
   bool break1  = false;         bool step1  = false;
   bool break2  = false;         bool step2  = false;
   bool break3  = false;         bool step3  = false;
