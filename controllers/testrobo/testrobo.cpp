@@ -430,7 +430,7 @@ int main(int argc, char **argv) {
             if (breakTime==28){
               side3 = colour_mp["Red"];
             }
-            std::cout<<"Red"<<"\n";
+            std::cout<<"Red - 1"<<"\n";
           }else if (blue>green){
             if (breakTime==18){
               side1 = colour_mp["Blue"];
@@ -441,7 +441,7 @@ int main(int argc, char **argv) {
             if (breakTime==28){
               side3 = colour_mp["Blue"];
             }
-            std::cout<<"Blue"<<"\n";
+            std::cout<<"Blue - 3"<<"\n";
           }else{
             if (breakTime==18){
               side1 = colour_mp["Green"];
@@ -452,7 +452,7 @@ int main(int argc, char **argv) {
             if (breakTime==28){
               side3 = colour_mp["Green"];
             }
-            std::cout<<"Green"<<"\n";
+            std::cout<<"Green - 2"<<"\n";
           } 
         }
          // choosing the path and camera disable
@@ -630,10 +630,17 @@ int main(int argc, char **argv) {
           // calculate the differnce
           if (turns==2 || turns==5){
             difference = abs(side2-side3);
+            std::cout<<"Front = "<<side3<<"           "<<"Bottom = "<<side2<<"\n"; 
           }else{
             difference = abs(side2-side1);
+            std::cout<<"Front = "<<side1<<"           "<<"Bottom = "<<side2<<"\n";
           }
           std::cout<<"Difference: "<<difference<<"\n";
+          if (difference%2){
+            std::cout<<"Should turn right on the ramp"<<"\n";
+          }else{
+            std::cout<<"Should turn left on the ramp"<<"\n";
+          }
         }
 
         // stop wheels until the box activities
@@ -683,7 +690,7 @@ int main(int argc, char **argv) {
       
       if (turns==1 && case8){
         display->drawText("Q-01",13,25);
-        std::cout<<"Q=01"<<"\n";
+        std::cout<<"Quadrant No. = 01"<<"\n";
         ps[0]->enable(TIME_STEP);              // enable the position sensor of the wheel
         ps[1]->enable(TIME_STEP);
         case8 = false;
@@ -691,11 +698,11 @@ int main(int argc, char **argv) {
       if (turns==4 && case9){
         if (!path2){
           display->drawText("Q-03",13,35);
-          std::cout<<"Q=03"<<"\n";
+          std::cout<<"Quadrant No. = 03"<<"\n";
           case9 = false;
         }else{
           display->drawText("Q-02",13,35);
-          std::cout<<"Q=02"<<"\n";
+          std::cout<<"Quadrant No. = 02"<<"\n";
           case5 = true;
           acc->enable(TIME_STEP);             // enable the accelerometer
           baseSpeed = 10;
@@ -705,7 +712,7 @@ int main(int argc, char **argv) {
       }
       if (((turns==7 && path1) || (turns==5 && path3)) && case10){
         display->drawText("Q=02",13,45);
-        std::cout<<"Q=02"<<"\n";
+        std::cout<<"Quadrant No. = 02"<<"\n";
         case5  = true;
         acc->enable(TIME_STEP);             // enable the accelerometer
         baseSpeed = 10;
@@ -749,7 +756,10 @@ int main(int argc, char **argv) {
         std::cout<<"Pillars: "<<poles<<"\n";
         if (poles == 1){
           turnTime = 52;
+          std::cout<<"Path is wrong"<<"\n";
           reverse  = true;
+        }else{
+          std::cout<<"Path is correct"<<"\n";
         }
         ramp++;        
         case3 = false;
