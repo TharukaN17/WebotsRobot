@@ -204,8 +204,8 @@ int main(int argc, char **argv) {
   
   int starting = 0;               // for the starting
    
-  double kp         = 3.20;          // line following parameters
-  double kd         = 0.5;
+  double kp         = 2.71;          // line following parameters
+  double kd         = 0.3;
   double ki         = 0.01;
   double baseSpeed  = 8;
   
@@ -693,7 +693,7 @@ int main(int argc, char **argv) {
         std::cout<<"Q=02"<<"\n";
         case5  = true;
         acc->enable(TIME_STEP);             // enable the accelerometer
-        baseSpeed = 9;
+        baseSpeed = 10;
         case10 = false;
       }
 
