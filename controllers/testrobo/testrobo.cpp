@@ -413,11 +413,11 @@ int main(int argc, char **argv) {
           int green = 0;
           int blue  = 0;
           const unsigned char *image = cam->getImage();
-          for (int x = 0; x < 64; x++){
-            for (int y = 0; y < 64; y++) {
-              red   += cam->imageGetRed(image, 64, x, y);
-              green += cam->imageGetGreen(image, 64, x, y);
-              blue  += cam->imageGetBlue(image, 64, x, y);
+          for (int x = 0; x < 16; x++){
+            for (int y = 0; y < 16; y++) {
+              red   += cam->imageGetRed(image, 16, x, y);
+              green += cam->imageGetGreen(image, 16, x, y);
+              blue  += cam->imageGetBlue(image, 16, x, y);
               }
             }
           if (red>blue && red>green){
