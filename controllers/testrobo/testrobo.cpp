@@ -320,7 +320,7 @@ int main(int argc, char **argv) {
         if (turnTime > 0 && ramp==1 && difference%2){                                                               // junctions to turn left
           turnRight();
           if (turnTime==1){
-            baseSpeed = 8;
+            baseSpeed = 8;          // slow down on the ramp
           }
         }else if (turnTime > 0 && ramp==1 && !(difference%2)){                                                      // junctions to turn right
           turnLeft();
@@ -328,10 +328,10 @@ int main(int argc, char **argv) {
             baseSpeed = 8;
           }
         }else if (turnTime > 0 && ramp == 5){
-          noTurn(); 
+          noTurn();                                                                                                 // junctions to take no turn
           if (turnTime==1){
             baseSpeed = 8;
-          }                                                                                                // junctions to take no turn
+          }                                                                                                
         }
         // -----------------------------------------------------------------------------------------------       
         // path 1
@@ -366,7 +366,7 @@ int main(int argc, char **argv) {
           if (difference%2){
             turnLeftI();
             if (turnTime==1){
-            baseSpeed = 10;
+            baseSpeed = 10;             // speed up for ramp
           }
           }else{
             turnRightI();
