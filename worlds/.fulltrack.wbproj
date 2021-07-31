@@ -9,5 +9,5 @@ orthographicViewHeight: 1
 textFiles: 0 "controllers/testrobo/testrobo.cpp" "controllers/gate1_controller/gate1_controller.cpp" "controllers/gate2_controller/gate2_controller.cpp"
 globalOptionalRendering: CoordinateSystem
 consoles: Console:All:All
-renderingDevicePerspectives: Nota:camera;0;10.5;0;0
+renderingDevicePerspectives: Nota:camera;1;1;0;0
 renderingDevicePerspectives: Nota:display;0;10.5;0;0
