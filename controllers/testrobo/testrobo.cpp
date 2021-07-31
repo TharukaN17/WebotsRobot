@@ -319,10 +319,19 @@ int main(int argc, char **argv) {
 
         if (turnTime > 0 && ramp==1 && difference%2){                                                               // junctions to turn left
           turnRight();
+          if (turnTime==1){
+            baseSpeed = 8;
+          }
         }else if (turnTime > 0 && ramp==1 && !(difference%2)){                                                      // junctions to turn right
           turnLeft();
+          if (turnTime==1){
+            baseSpeed = 8;
+          }
         }else if (turnTime > 0 && ramp == 5){
-          noTurn();                                                                                                 // junctions to take no turn
+          noTurn(); 
+          if (turnTime==1){
+            baseSpeed = 8;
+          }                                                                                                // junctions to take no turn
         }
         // -----------------------------------------------------------------------------------------------       
         // path 1
@@ -356,8 +365,14 @@ int main(int argc, char **argv) {
         else if (turnTime > 0 && poles){
           if (difference%2){
             turnLeftI();
+            if (turnTime==1){
+            baseSpeed = 10;
+          }
           }else{
             turnRightI();
+            if (turnTime==1){
+            baseSpeed = 10;
+          }
           }  
         }
         // line following
@@ -683,7 +698,7 @@ int main(int argc, char **argv) {
           std::cout<<"Q=02"<<"\n";
           case5 = true;
           acc->enable(TIME_STEP);             // enable the accelerometer
-          baseSpeed = 9;
+          baseSpeed = 10;
           case9 = false;
         }
         
@@ -723,7 +738,6 @@ int main(int argc, char **argv) {
           if (case4){
             poles++;
             ramp++;
-            baseSpeed = 8;
           }        
           case4 = false;
         }else{
