@@ -7,5 +7,6 @@
 ### Group Members
 1. [Laksara Thilakarathna](https://github.com/LaksaraThilakarathna)
 1. [Muhammad Aqeel](https://github.com/AqeelMuhammad)
+1. [Tharuka Nilupul](https://github.com/TharukaN17)
 1. [Tharindu Wijesinghe](https://github.com/Tharindu531)
 1. [Navoda Sewwandi](https://github.com/Navoda-Sewwandi)
